@@ -17,13 +17,14 @@ io.on('connection' , (socket) => {
 
     socket.on('createMessage' , (message) => {
         console.log("createMessage: ", message);
-    }); //this will listen for the createMessage event
 
-    socket.emit('newMessage' , {
-        from: 'Admin',
-        text: 'Welcome to the chat app',
-        createdAt: new Date().getTime()
-    }) //sends this to client when a new user connects
+        socket.broadcast.emit('newMessage' , {
+            from: 'Admin',
+            text: 'Welcome to the chat app',
+            createdAt: new Date().getTime()
+        }); //broadcast to all other users except the sender
+        
+    }); //this will listen for the createMessage event
 
     socket.on('disconnect' , () => {
         console.log("A user was disconnected");
