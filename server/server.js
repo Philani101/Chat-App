@@ -15,16 +15,30 @@ app.use(express.static(publicPath)); //this will serve the static files in the p
 io.on('connection' , (socket) => {
     console.log("A new user just connected")
 
-    socket.on('createMessage' , (message) => {
-        console.log("createMessage: ", message);
-    }); //this will listen for the createMessage event
-
     socket.emit('newMessage' , {
         from: 'Admin',
-        text: 'Welcome to the chat app',
+        text: 'Welcome new user, to the chat app',
         createdAt: new Date().getTime()
-    }) //sends this to client when a new user connects
+    });// for everyone who connects
 
+    socket.broadcast.emit('newMessage' , {
+        from: 'Admin',
+        text: 'New user just joined the chat app',
+        createdAt: new Date().getTime()
+    });// for everyone who connects but the current user
+
+    socket.on('createMessage' , (message) => {
+        console.log("createMessage: ", message);
+
+        io.emit('newMessage' , {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        }) //sends this to all clients that are connected when a new user connects
+    
+    }); //this will listen for the createMessage event
+
+    
     socket.on('disconnect' , () => {
         console.log("A user was disconnected");
     }); //this will listen for the disconnect event

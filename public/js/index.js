@@ -3,12 +3,6 @@ let socket = io(); //this is gonna create a connection to the server(backend)
 socket.on('connect', function ()  {
     console.log('connected to server.');
 
-    socket.emit('createMessage' , {
-        //object of data you are sending to server
-        from: 'mike',
-        text: 'hey, this is mike.'
-    }); // you place this under a button
-
 }); // do something when you have connected to the server
 
 socket.on('newMessage' , function (message){
