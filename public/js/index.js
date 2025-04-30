@@ -1,3 +1,5 @@
+const { generateMessage } = require("../../server/utils/message");
+
 let socket = io(); //this is gonna create a connection to the server(backend)
 
 socket.on('connect', function ()  {
@@ -14,3 +16,9 @@ socket.on('newMessage' , function (message){
 io.on('disconnect', function () {
     console.log('disconnected from server.');
 }); // disconnected from server(e.g server crashes or network issues)
+
+
+document.querySelector('#submitBtn').addEventListener('click', function (e) {
+  
+  
+});
