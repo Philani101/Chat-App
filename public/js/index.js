@@ -1,24 +1,87 @@
-const { generateMessage } = require("../../server/utils/message");
 
-let socket = io(); //this is gonna create a connection to the server(backend)
+document.addEventListener('DOMContentLoaded', function () {
+    const socket = io(); //this is gonna create a connection to the server(backend)
 
-socket.on('connect', function ()  {
-    console.log('connected to server.');
+    socket.on('connect', function ()  {
+        console.log('connected to server.');
 
-}); // do something when you have connected to the server
+    }); // do something when you have connected to the server
 
-socket.on('newMessage' , function (message){
-    console.log('newMessage: ', message); //this will log the message to the console when the newMessage event is emitted from the server
-                       //you can also use this to update the UI with the new message
-    alert("message received from server" );
-}); //listens for newMessage event from server
+    socket.on('newMessage' , function (message){
+        console.log('newMessage: ', message); //this will log the message to the console when the newMessage event is emitted from the server
+        const template = document.querySelector('#msg-template').innerHTML; //this will get the template from the HTML file
+        const html = Mustache.render(template, {
+            from: message.from,
+            text: message.text,
+            createdAt: moment(message.createdAt).format('llll') //this will format the date and time using moment.js
+        });
+        
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        document.querySelector('#message-form').appendChild(div);
+        //alert("message received from server" );
+        // const formattedTime = moment(message.createdAt).format('llll');
+        // let boxContainer = document.getElementById('message-form');
+        // let newMsg = document.createElement('li');
+        // newMsg.innerHTML = `${message.from}: ${message.text} created at ${formattedTime}`;
+        // boxContainer.appendChild(newMsg);
+    }); //listens for newMessage event from server
 
-io.on('disconnect', function () {
-    console.log('disconnected from server.');
-}); // disconnected from server(e.g server crashes or network issues)
+    socket.on('newLocationMessage' , function (message){
+        const template = document.querySelector('#msg-template-2').innerHTML; //this will get the template from the HTML file
+        const html = Mustache.render(template, {
+            from: message.from,
+            text: message.url,
+            createdAt: moment(message.createdAt).format('llll') //this will format the date and time using moment.js
+        });
+        
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        document.querySelector('#message-form').appendChild(div);
+        // console.log('newLocationMessage: ', message); //this will log the message to the console when the newMessage event is emitted from the server
+        // //alert("message received from server" );
+        // const formattedTime = moment(message.createdAt).format('llll');
+        // let boxContainer = document.getElementById('message-form');
+        // let newMsg = document.createElement('li');
+        // newMsg.classList.add('location-message'); //this will add a class to the new message element
+        // newMsg.innerHTML = `${message.from}: ${message.text} created at ${formattedTime} <br> Location: `;
+        // let a = document.createElement('a');
+        // a.setAttribute('target', '_blank'); //this will open the link in a new tab
+        // a.setAttribute('href', message.url); //this will set the href attribute of the link to the url of the message
+        // a.classList.add('location-link'); //this will add a class to the link element
+        // a.innerText = ` My current location`;
+        // newMsg.appendChild(a);
+        // boxContainer.appendChild(newMsg);
+    });
+
+    socket.on('disconnect', function () {
+        console.log('disconnected from server.');
+    }); // disconnected from server(e.g server crashes or network issues)
 
 
-document.querySelector('#submitBtn').addEventListener('click', function (e) {
-  
-  
+    document.querySelector('#submitBtn').addEventListener('click', function(e){
+    e.preventDefault();
+    console.log('submit button clicked.');
+
+    socket.emit('createMessage', {
+        from: 'User',
+        text: document.getElementById('message').value,
+        createdAt: new Date().getTime()
+    });
+    }); //this will emit the createMessage event to the server when the submit button is clicked
+    document.querySelector('#send-location').addEventListener('click', function(e){
+        e.preventDefault();
+        if(!navigator.geolocation){
+          return alert('Geolocation not supported by your browser.');
+        }
+
+        navigator.geolocation.getCurrentPosition(function(position){
+          socket.emit('createLocationMessage', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          });
+        }, function(){
+            return alert('Unable to fetch location.');//this will alert the user if the location is not found or if something goes wrong
+        })
+    });
 });

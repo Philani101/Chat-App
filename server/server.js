@@ -3,7 +3,7 @@ const express = require("express");
 const http = require("http"); //this is the http module which will help to create our own server
 const socketIO = require("socket.io");
 
-const {generateMessage} = require('./utils/message'); 
+const {generateMessage, generateLocationMessage} = require('./utils/message'); 
 //this is the path to the public folder(will help to serve static files)
 const publicPath = path.join(__dirname, "../public");
 let app = express();
@@ -14,12 +14,11 @@ let io = socketIO(server); //this will create a socket.io server using the http 
 app.use(express.static(publicPath)); //this will serve the static files in the public folder
 
 io.on('connection' , (socket) => {
-    console.log("A new user just connected")
+    console.log("A new user just connected");
 
     socket.emit('newMessage' , generateMessage('Admin', 'Welcome new user, to the chat app')
     );// for everyone who connects
 
-        text: 'New user just joined the chat app',
     socket.broadcast.emit('newMessage' , generateMessage('Admin', 'New user just joined the chat app')
     );// for everyone who connects but the current user
 
@@ -32,6 +31,9 @@ io.on('connection' , (socket) => {
     
     }); //this will listen for the createMessage event
 
+    socket.on('createLocationMessage', (coords) => {
+      io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude , coords.longitude));
+    });
     
     socket.on('disconnect' , () => {
         console.log("A user was disconnected");
