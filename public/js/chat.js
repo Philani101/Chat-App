@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('submit button clicked.');
 
     socket.emit('createMessage', {
-        from: 'User',
+        from:  displayname,
         text: document.getElementById('message-input').value,
         createdAt: new Date().getTime()
     });
