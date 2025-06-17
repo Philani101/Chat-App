@@ -17,6 +17,7 @@ body{
     padding: 2vh;
     gap: 2vh;
     align-items: center;
+
 }
 a{
     color:#80EF80;
@@ -36,6 +37,18 @@ a{
     border-radius: 50%;
     object-fit: cover;
     background-color: #80EF80;
+}
+#profilePicture:hover{
+    width: 10vh;
+    height: 10vh;
+    border-radius: 0%;
+    object-fit: cover;
+    background-color: #80EF80;
+}
+.user-info{
+    color: #112A46;
+    font-weight:bold;
+    
 }
 a:hover{
     transform: scale(1.05);

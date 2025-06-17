@@ -2,10 +2,11 @@ function scrollToBottom() {
     let messages = document.querySelector('#message-form').lastElementChild; //this will get the last message element in the message-form
     messages.scrollIntoView();
 }
-let displayname;
-let currentRoom;
+let displayname = '';
+let currentRoom = '';
 
 document.addEventListener('DOMContentLoaded', function () {
+    const canvas = document.getElementById('profilePicture');
     const socket = io(); //this is gonna create a connection to the server(backend)
 
     socket.on('connect', function ()  {
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             for (const [key, value] of searchParams.entries()) {
                 params[key] = value;
             }
+        socket.emit('connected',params);
         socket.emit('join', params, function(err) {
             if(err) {
                 alert(err);
@@ -29,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }); // do something when you have connected to the server
 
     const screenHeight = document.querySelector('#message-form').scrollHeight;
+    
 
     socket.on('newMessage' , function (message){
         console.log('newMessage: ', message); //this will log the message to the console when the newMessage event is emitted from the server
