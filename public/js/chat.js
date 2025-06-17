@@ -2,13 +2,30 @@ function scrollToBottom() {
     let messages = document.querySelector('#message-form').lastElementChild; //this will get the last message element in the message-form
     messages.scrollIntoView();
 }
+let displayname;
+let currentRoom;
 
 document.addEventListener('DOMContentLoaded', function () {
     const socket = io(); //this is gonna create a connection to the server(backend)
 
     socket.on('connect', function ()  {
         console.log('connected to server.');
-
+        let searchQuery = window.location.search; //this will get the query string from the URL and remove the '?' at the beginning
+        let params = {};
+            const searchParams = new URLSearchParams(searchQuery);
+            for (const [key, value] of searchParams.entries()) {
+                params[key] = value;
+            }
+        socket.emit('join', params, function(err) {
+            if(err) {
+                alert(err);
+                window.location.href = '/'; //this will redirect the user to the home page if there is an error
+            } else {
+                console.log('No error');
+                displayname = params.name;
+                currentRoom = params.room;
+            }
+        }); 
     }); // do something when you have connected to the server
 
     const screenHeight = document.querySelector('#message-form').scrollHeight;

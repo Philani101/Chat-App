@@ -4,6 +4,7 @@ const http = require("http"); //this is the http module which will help to creat
 const socketIO = require("socket.io");
 
 const {generateMessage, generateLocationMessage} = require('./utils/message'); 
+const {isRealString} = require('./utils/isRealString');
 //this is the path to the public folder(will help to serve static files)
 const publicPath = path.join(__dirname, "../public");
 let app = express();
@@ -21,6 +22,16 @@ io.on('connection' , (socket) => {
 
     socket.broadcast.emit('newMessage' , generateMessage('Admin', 'New user just joined the chat app')
     );// for everyone who connects but the current user
+    socket.on('join', (params, callback) => {
+        if(!isRealString(params.name) || !isRealString(params.room)) {
+            return callback('Name and room are required');
+        } //this will check if the name and room are real strings
+        console.log("join room: ", params);
+        socket.join(params.room); //this will join the user to the room
+        socket.emit('newMessage', generateMessage(`Admin', 'Welcome to the ${params.room} room`));
+        // socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined`));
+        callback(); //this will call the callback function when the user joins
+    }); //this will listen for the join event
 
     socket.on('createMessage' , (message) => {
         console.log("createMessage: ", message);
