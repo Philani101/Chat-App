@@ -6,7 +6,7 @@ body{
     flex-direction: row;
     align-items: stretch;
     min-height: 100vh;
-    width: 100vw;
+    max-width: 100vw;
     margin: 0;
 }
 .menu{
@@ -66,8 +66,13 @@ a:hover{
     gap: 1vh;
     
 }
-#message{
-    width: 95%;
+.chat-accessories{
+    display: flex;
+    flex-direction: row;
+    gap: 1vh;
+}   
+#message-input{
+    flex-grow: 1;
     height: 5vh;
     border-radius: 5px;
     border: 2px solid #112A46;
@@ -92,6 +97,7 @@ button:active{
     transform: scale(0.95);
 }
 .btn-container{
+    flex-grow: 0;
     display: flex;
     flex-direction: row;
     gap: 1vh;
@@ -104,10 +110,15 @@ button:active{
     font-weight: bold;
 }
 .location-link:hover{
-    animation: pulse 1.2fis infinite;
+    animation: pulse;
+    animation-duration: 1.2s;
+    animation-iteration-count:infinite ;
 }
 .received-message{
     color: #112A46;
+}
+.received-message-timestamp{
+    color: #112a4696;
 }
 .message-box:hover{
     font-weight: bold;
@@ -120,10 +131,27 @@ button:active{
 .message-box{
     display: flex;
     flex-direction: column;
-    background-color: #80EF80;
     padding-left: 2vh;
     border-left: #112A46 5px solid;
     list-style-type: none;
     gap: 1vh;
     margin-top: 1vh;
+}
+#message-form{
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 66vh;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+#scroll-down-arrow{
+    width: fit-content;
+    height: fit-content;
+    cursor: pointer;
+    color: #112A46;
+    display: none;
+    position:absolute;
+    top: 83vh;
+    left: 50%;
+    opacity: 0.7;
 }

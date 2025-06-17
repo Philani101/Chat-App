@@ -2,55 +2,22 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-      <title></title>
-      <link rel="stylesheet" href="./css/indexStyle.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Join | Chat App</title>
+        <link rel="stylesheet" href="./css/index.css">
     </head>
     <body>
-       <section class="menu">
-        <canvas id="profilePicture"></canvas>
-          <a href="#">Home</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
-      </section>
-      <section class="chatContainer">
-          <section class="title"><p id="title_1">Welcome to the </p><p id="title_2"> chat </p><p id="title_3"> App</p></section>
-          <form id="message-form">
-          </form>
-          <input type="text" placeholder="message" name="message" id="message">
-          <section class="btn-container">
-            <button type="submit" id="submitBtn">Send Message</button>
-            <button type="submit" id="send-location">Send Location</button>
-          </section>
-      </section>
-      
-       <script id="msg-template" type="text/template">
-          <li class="message-box">
-            <section class="message_info">
-              <label class="received-message">{{from}}</label>
-              <label class="received-message">{{createdAt}}</label>
+        <form id="join-form" action="/chat.html">
+            <h1>Join | Chat</h1>
+            <section class="input-container">
+                <label for="username">Username</label>
+                <input type="text" name="username" placeholder="Enter your username" required>
             </section>
-            <section class="message_info">
-              <a class="received-message">{{text}}</a>
+            <section class="input-container">
+                 <label for="room">Room</label>
+                 <input type="text" name="room" placeholder="Enter room name" required>
             </section>
-          </li>
-       </script>
-       <script id="msg-template-2" type="text/template">
-          <li class="message-box">
-            <section class="message_info">
-              <label class="received-message">{{from}}</label>
-              <label class="received-message">{{createdAt}}</label>
-            </section>
-            <section class="message_info">
-              <a class="location-link" href="{{text}}">click to view my location</a>
-            </section>
-          </li>
-       </script>
-
-       <script src="/socket.io/socket.io.js"></script>
-       <script src="./js/index.js" ></script>
-       <script src="./js/libs/moment.js" ></script>
-       <script src="https://unpkg.com/mustache@4.2.0/mustache.min.js"></script>
-       
+            <button type="submit">Join</button>
+        </form>
     </body>
 </html>
