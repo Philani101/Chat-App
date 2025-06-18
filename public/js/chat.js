@@ -2,11 +2,49 @@ function scrollToBottom() {
     let messages = document.querySelector('#message-form').lastElementChild; //this will get the last message element in the message-form
     messages.scrollIntoView();
 }
+function getRandomTriadicColor() {
+    const baseHue = 120;
+    // Pick randomly from the triadic hues, excluding green (120°)
+    const triadicHues = [(baseHue + 120) % 360, (baseHue + 240) % 360];
+    const hue = triadicHues[Math.floor(Math.random() * triadicHues.length)];
+
+    const saturation = Math.floor(Math.random() * 30) + 50;
+    const lightness = Math.floor(Math.random() * 30) + 40;
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+function getRandomComplementaryColor() {
+  const baseHue = 120;
+  const complementaryHue = (baseHue + 180) % 360;
+
+  const saturation = Math.floor(Math.random() * 30) + 50; // 50-80%
+  const lightness = Math.floor(Math.random() * 30) + 40;  // 40-70%
+
+  return `hsl(${complementaryHue}, ${saturation}%, ${lightness}%)`;
+}
+
+function getRandomSplitComplementaryColor() {
+  const baseHue = 120;
+  const splitHue = (baseHue + (Math.random() < 0.5 ? 150 : 210)) % 360;
+
+  const saturation = Math.floor(Math.random() * 30) + 50;
+  const lightness = Math.floor(Math.random() * 30) + 40;
+
+  return `hsl(${splitHue}, ${saturation}%, ${lightness}%)`;
+}
+function getRandomHarmonyColor() {
+  const modes = ['complementary', 'split', 'triadic'];
+  const pick = modes[Math.floor(Math.random() * modes.length)];
+
+  if (pick === 'complementary') return getRandomComplementaryColor();
+  if (pick === 'split')         return getRandomSplitComplementaryColor();
+  if (pick === 'triadic')       return getRandomTriadicColor();
+}
 let displayname = '';
 let currentRoom = '';
 
-document.addEventListener('DOMContentLoaded', function () {
-    const canvas = document.getElementById('profilePicture');
+document.addEventListener('DOMContentLoaded', function (e) {
+    document.documentElement.style.setProperty('--main-color', getRandomHarmonyColor());
     const socket = io(); //this is gonna create a connection to the server(backend)
 
     socket.on('connect', function ()  {
@@ -51,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // let newMsg = document.createElement('li');
         // newMsg.innerHTML = `${message.from}: ${message.text} created at ${formattedTime}`;
         // boxContainer.appendChild(newMsg);
-        console.log(screenHeight);
         let currentHeight = document.querySelector('#message-form').scrollHeight;
         if(currentHeight > screenHeight) {
             document.querySelector('#scroll-down-arrow').setAttribute('style', 'display: block;'); //this will show the scroll down arrow if the current height is greater than the screen height
@@ -83,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // a.innerText = ` My current location`;
         // newMsg.appendChild(a);
         // boxContainer.appendChild(newMsg);
-        console.log(screenHeight);
         let currentHeight = document.querySelector('#message-form').scrollHeight;
         if(currentHeight > screenHeight) {
             document.querySelector('#scroll-down-arrow').setAttribute('style', 'display: block;'); //this will show the scroll down arrow if the current height is greater than the screen height
@@ -114,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         navigator.geolocation.getCurrentPosition(function(position){
           socket.emit('createLocationMessage', {
+            from: displayname,
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
           });
