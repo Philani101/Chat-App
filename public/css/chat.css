@@ -34,19 +34,22 @@ a{
     width: 100vw;
     gap: 1vh;
 }
-#profilePicture{
-    width: 10vh;
-    height: 10vh;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: #80EF80;
+#profileInfo{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    padding: 1vh;
+    align-items: start;
 }
-#profilePicture:hover{
-    width: 10vh;
-    height: 10vh;
-    border-radius: 0%;
-    object-fit: cover;
-    background-color: #80EF80;
+.infoIcons{
+    color: #80EF80;
+    margin-left: 0.5vh;
+}
+.info-space{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1vh;
 }
 .user-info{
     color: #112A46;
@@ -174,4 +177,31 @@ button:active{
     top: 83vh;
     left: 50%;
     opacity: 0.7;
+}
+#users{
+    display: flex;
+    flex-direction: column;
+    padding: 1vh;
+    background-color: #80EF80;
+    width: fit-content;
+    max-height: 100vh;
+    overflow-y: auto;
+    font-weight: bold;
+    border-radius: 22px;
+}
+h2{
+    color: #80EF80;
+    font-weight: bold;
+    text-align: left;
+    margin: 0;
+}
+.user-list-item{
+    padding: 0;
+    margin: 1vh;
+}
+.user-list{
+    padding: 0;
+}
+.user-list .user-list-item{
+    list-style-type: none;
 }

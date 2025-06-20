@@ -5,17 +5,17 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title></title>
       <link rel="stylesheet" href="./css/chat.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     </head>
     <body>
        <section class="menu">
-        <canvas id="profilePicture">
-          
-        </canvas>
-          <a href="#">Home</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
+        <section id="profileInfo">
+          <section class="info-space"><i class="fa-solid fa-user" style="color: #80EF80;"></i> <label class="infoIcons" id="username">none</label></section>
+          <section class="info-space"><i class="fa-solid fa-house" style="color: #80EF80;"></i> <label class="infoIcons" id="roomName">none</label></section>
+        </section>
+        <h2>People</h2>
+        <section id="users"></section>
       </section>
       <section class="chatContainer">
           <section class="title"><p id="title_1">Welcome to </p><p id="title_2"> Word </p><p id="title_3"> Xchange</p></section>

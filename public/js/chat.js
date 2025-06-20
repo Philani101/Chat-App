@@ -40,8 +40,8 @@ function getRandomHarmonyColor() {
   if (pick === 'split')         return getRandomSplitComplementaryColor();
   if (pick === 'triadic')       return getRandomTriadicColor();
 }
-let displayname = '';
-let currentRoom = '';
+// let displayname = '';
+// let currentRoom = '';
 
 document.addEventListener('DOMContentLoaded', function (e) {
     document.documentElement.style.setProperty('--main-color', getRandomHarmonyColor());
@@ -62,17 +62,33 @@ document.addEventListener('DOMContentLoaded', function (e) {
                 window.location.href = '/'; //this will redirect the user to the home page if there is an error
             } else {
                 console.log('No error');
-                displayname = params.name;
-                currentRoom = params.room;
+                // displayname = params.name;
+                document.querySelector('#username').innerText = params.name; //this will set the display name to the name of the user
+                // currentRoom = params.room;
+                document.querySelector('#roomName').innerText = params.room; //this will set the room name to the name of the room
             }
         }); 
     }); // do something when you have connected to the server
 
     const screenHeight = document.querySelector('#message-form').scrollHeight;
-    
+    socket.on('updateUserList', function (users) {
+        console.log('updateUserList: ', users); //this will log the users to the console when the updateUserList event is emitted from the server
+        let ol = document.createElement('ol');
+        ol.classList.add('user-list'); //this will add a class to the ol element
+        users.forEach(function(user) {
+            let li = document.createElement('li');
+            li.innerText = user;
+            li.style.color = getRandomHarmonyColor(); //this will set the color of the user name to a random color
+            li.classList.add('user-list-item'); //this will add a class to the user
+            ol.appendChild(li);
+        });
+        let userList = document.querySelector('#users');
+        userList.innerHTML = ''; //this will clear the user list before adding new users
+        userList.appendChild(ol);
+    })
 
     socket.on('newMessage' , function (message){
-        console.log('newMessage: ', message); //this will log the message to the console when the newMessage event is emitted from the server
+        
         const template = document.querySelector('#msg-template').innerHTML; //this will get the template from the HTML file
         const html = Mustache.render(template, {
             from: message.from,
@@ -136,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
     console.log('submit button clicked.');
 
     socket.emit('createMessage', {
-        from:  displayname,
         text: document.getElementById('message-input').value,
         createdAt: new Date().getTime()
     });
@@ -150,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
         navigator.geolocation.getCurrentPosition(function(position){
           socket.emit('createLocationMessage', {
-            from: displayname,
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
           });
