@@ -25,6 +25,7 @@
           <section class="chat-accessories">
             <input type="text" placeholder="message" name="message" id="message-input">
             <section class="btn-container">
+              <i class="fa-solid fa-circle-plus fa-3x" style="color: #112A46;" href="#" id="addBtn"></i>
               <button type="submit" id="submitBtn">Send Message</button>
               <button type="submit" id="send-location">Send Location</button>
             </section>
@@ -42,6 +43,9 @@
               <a class="received-message">{{text}}</a>
             </section>
           </li>
+       </script>
+       <script id="media-template" type="text/template">
+          <canvas class="media"></canvas>
        </script>
        <script id="msg-template-2" type="text/template">
           <li class="message-box">

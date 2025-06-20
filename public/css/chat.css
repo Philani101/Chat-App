@@ -205,3 +205,9 @@ h2{
 .user-list .user-list-item{
     list-style-type: none;
 }
+#addBtn:hover{
+    transform: scale(1.05);
+}
+#addBtn:active{
+    transform: scale(0.95);
+}
