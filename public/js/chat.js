@@ -149,12 +149,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     document.querySelector('#submitBtn').addEventListener('click', function(e){
     e.preventDefault();
-    console.log('submit button clicked.');
 
     socket.emit('createMessage', {
         text: document.getElementById('message-input').value,
         createdAt: new Date().getTime()
     });
+    document.getElementById('message-input').value = ''; //this will clear the input field after the message is sent
     }); //this will emit the createMessage event to the server when the submit button is clicked
     document.querySelector('#send-location').addEventListener('click', function(e){
         e.preventDefault();
@@ -176,5 +176,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
         e.preventDefault();
         scrollToBottom();
         document.querySelector('#scroll-down-arrow').setAttribute('style', 'display: none;');
+    });
+    document.querySelector('#exitBtn').addEventListener('click', function(e){
+        e.preventDefault();
+        socket.disconnect(); //this will disconnect the user from the server
+        window.location.href = '/'; //this will redirect the user to the home page
     });
 });
